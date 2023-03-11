@@ -85,6 +85,9 @@ public class HandController : MonoBehaviour {
 				// Skip object not available
 				if ( !anchors_in_the_scene[i].is_available() ) continue;
 
+				// Skip object requiring special upgrades
+				if ( !anchors_in_the_scene[i].can_be_grasped_by( playerController ) ) continue;
+
 				// Compute the distance to the object
 				oject_distance = Vector3.Distance( this.transform.position, anchors_in_the_scene[i].transform.position );
 
