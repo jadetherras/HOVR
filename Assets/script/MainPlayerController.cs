@@ -5,6 +5,7 @@ using UnityEngine;
 public class MainPlayerController : MonoBehaviour {
 
 	protected List<Type> list_of_player_upgrades = new List<Type>();
+	protected bool godMode = false;
 
 	public void acquire_item ( CollectibleItem item ) {
 		// Check that the upgrade is not already acquired
@@ -20,8 +21,17 @@ public class MainPlayerController : MonoBehaviour {
 		return false;
 	}
 
+	public bool GetMode(){
+		return godMode;
+	}
+
+	public void SetMode(bool mode){
+		godMode = mode;
+	}
+
 
 	void OnTriggerEnter ( Collider other ) {
+
 
 		// Retreive the object to be collected if it exits
 		InteractiveItem interactive_item = other.GetComponent<InteractiveItem>();

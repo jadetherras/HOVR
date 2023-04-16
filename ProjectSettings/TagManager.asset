@@ -7,6 +7,9 @@ TagManager:
   - object
   - displayer
   - plate
+  - Lantern
+  - MoveItem
+  - Container
   layers:
   - Default
   - TransparentFX
