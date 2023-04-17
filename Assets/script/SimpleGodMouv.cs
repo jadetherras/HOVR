@@ -34,6 +34,7 @@ public class SimpleGodMouv : MonoBehaviour
 
     public void translation (int direction) {
         if(i == 0){
+            OVRInput.SetControllerVibration( 0.2f, 0.05f, OVRInput.Controller.RTouch);
             switch(direction) 
             {
               case 0:
@@ -74,6 +75,7 @@ public class SimpleGodMouv : MonoBehaviour
 
     public void rotation (int direction) {
         if(r == 0){
+			OVRInput.SetControllerVibration( 0.2f, 0.05f, OVRInput.Controller.RTouch);
             r = 180;
             switch(direction) 
             {

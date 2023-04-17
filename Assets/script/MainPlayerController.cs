@@ -6,6 +6,7 @@ public class MainPlayerController : MonoBehaviour {
 
 	protected List<Type> list_of_player_upgrades = new List<Type>();
 	protected bool godMode = false;
+	protected bool nearAutel = false;
 
 	public void acquire_item ( CollectibleItem item ) {
 		// Check that the upgrade is not already acquired
@@ -27,6 +28,14 @@ public class MainPlayerController : MonoBehaviour {
 
 	public void SetMode(bool mode){
 		godMode = mode;
+	}
+
+	public void SetNearAutel(bool state){
+		nearAutel = state;
+	}
+
+	public bool IsNearAutel(){
+		return nearAutel;
 	}
 
 

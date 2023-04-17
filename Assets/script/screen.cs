@@ -2,16 +2,30 @@ using UnityEngine;
 
 public class screen : InteractiveItem {
 	
-	//void Start () {
-	//		GameObject.FindGameObjectWithTag("plate").SetActive(false);
-	//	}
-
-	public override void interacted_with ( MainPlayerController player ) {
-		GameObject.FindGameObjectWithTag("plate").SetActive(true);
+	public GameObject plate;
+	public bool Isactive = false;
+	//public int i = 0;
+	void Start () {
+			//plate = GameObject.FindGameObjectWithTag("plate");
+			plate.SetActive(Isactive);
 	}
 
-	public override void exit ( MainPlayerController player ) {
-		GameObject.FindGameObjectWithTag("plate").SetActive(false);
+	//void Update() {
+		//if(i == 25) {
+			//Isactive = !Isactive;
+			//GameObject.FindGameObjectWithTag("plate").SetActive(Isactive);
+			//plate.SetActive(Isactive);
+			//i = 0;
+		//}
+		//i = i+1;
+	//}
+
+	public override void interacted_with( MainPlayerController player ) {
+		plate.SetActive(true);
+	}
+
+	public override void exit( MainPlayerController player ) {
+		plate.SetActive(false);
 	}
 
 }

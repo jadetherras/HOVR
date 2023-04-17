@@ -10,7 +10,7 @@ public abstract class Interactable : MonoBehaviour
 
    public float get_interaction_radius () { return interactionRadius; }
 
-   public abstract void OnInteract();
+   public abstract void OnInteract(HandController hand);
 
 
    //need to be redefined for the different objects 

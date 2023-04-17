@@ -4,58 +4,33 @@ using UnityEngine;
 using UnityEngine.UI;
 //using LightToggler.cs; //added!
 
-public class Lantern_switch : Interactable {
+public class Autel : Interactable {
     
-    
-    
-    public bool IsActive = false; // Indicates whether the switch is currently active or not { get; private set; }
 
     // Events to be triggered when the switch is toggled
     //public event System.Action<bool> OnSwitchToggle;
 
     //private Toggle toggle; // Reference to the Unity UI Toggle component
 
-    public static int activeSwitchCount = 0; // Static counter to keep track of the number of active switches
-
     //private LightToggler light;
     //component for light and color change in function of toggle
-    
+    [Header("Player perso")]
+    public GameObject player;
+    public GameObject god;
 
-
-
-    private const string EMISSION_COLOR = "_EmissionColor";
-    private const string EMISSION = "_EMISSION";
-
-
-    private Material _material;
-
-    private Color _offColor = Color.red;
-    private Color _onColor = Color.green;
+    [Header("Player cameras")]
+    public GameObject playerHuman;
 
     private AudioSource audiosource;
 
     // Start is called before the first frame update (ev. use Awake instead)
     void Start()
     {
-        //toggle = GetComponent<Toggle>();
-        //toggle.onValueChanged.AddListener(OnToggleValueChanged);
         if ( GetComponent<AudioSource>() != null){
             audiosource = GetComponent<AudioSource>();
         } else {
             audiosource = null;
         }
-       
-         _material = GetComponent<Renderer>().material;
-        // _material.SetColor("_Color", _offColor);
-        _material.color = new Color(1,0,0);
-        //_onColor = _material.GetColor(EMISSION_COLOR);
-
-        //light = GetComponent<LightToggler>();
-    }
-
-     private void OnDestroy()
-    {
-        //toggle.onValueChanged.RemoveListener(OnToggleValueChanged);
     }
 
 /*
@@ -75,32 +50,17 @@ public class Lantern_switch : Interactable {
 
 
     public override void OnInteract(HandController hand){
-        if(!IsActive){
-            Debug.LogWarning("lantern triggered");
-            IsActive = true;
-            _material.color = new Color(0,1,0); //green
-            //add to the switch count
-            activeSwitchCount++;
-            //ev. TEXT => YOU HAVE x lights on y !! 
-            //play the sound_effect
-            if (audiosource != null){
-                audiosource.Play();
-            }
-
-            if(hand.is_left_hand()){
-			    OVRInput.SetControllerVibration(0.3f, 0.05f, OVRInput.Controller.LTouch);
-            } else {
-			    OVRInput.SetControllerVibration( 0.3f, 0.05f, OVRInput.Controller.RTouch);
-            }
-
-            if (activeSwitchCount == 5){
-            Debug.Log("You regained some of your powers and can access the next level!");
-
-            // Trigger an event to notify that all switches are active
-            _material.color = new Color(1,1,0);
-            //if (OnAllSwitchesActive != null){OnAllSwitchesActive.Invoke();}
-            }
+        
+        if (audiosource != null){
+            audiosource.Play();
         }
+
+        
+		OVRInput.SetControllerVibration(0.3f, 0.05f, OVRInput.Controller.LTouch);
+		OVRInput.SetControllerVibration( 0.3f, 0.05f, OVRInput.Controller.RTouch);
+
+        playerHuman.GetComponent<MainPlayerController>().SetNearAutel(true);
+        
     }
 
     /*
@@ -110,7 +70,7 @@ public class Lantern_switch : Interactable {
     {
         IsActive = isToggled;
 
-       // if (OnSwitchToggle != null) //chÃ© pas trop ce que Ã§a fait, Ã§a {   OnSwitchToggle.Invoke(isToggled);  }
+       // if (OnSwitchToggle != null) //ché pas trop ce que ça fait, ça {   OnSwitchToggle.Invoke(isToggled);  }
 
         // Check if all five switches are active
         if (isToggled)

@@ -4,7 +4,7 @@ using UnityEngine;
 public class ObjectAnchor : MonoBehaviour {
 
 	[Header( "Grasping Properties" )]
-	public float graspingRadius = 0.1f;
+	public double graspingRadius = 0;
 
 	//avoid distortion of object when inside container
 	private Vector3 originalScale;
@@ -18,7 +18,13 @@ public class ObjectAnchor : MonoBehaviour {
 	protected Vector3 lastPosition;
 	protected Vector3 Velocity;
   
-	void Start () { 
+	void Start () {
+		/*
+		if(graspingRadius == 0){
+			graspingRadius = Math.Sqrt(this.GetComponent<Collider>().bounds.size.x * this.GetComponent<Collider>().bounds.size.x + this.GetComponent<Collider>().bounds.size.y * this.GetComponent<Collider>().bounds.size.y + this.GetComponent<Collider>().bounds.size.z * this.GetComponent<Collider>().bounds.size.z) + 0.2;
+		}
+		*/
+
 		initial_transform_parent = transform.parent; 
 		rb = GetComponent<Rigidbody>();
 		//joint = GetComponent<FixedJoint>();
@@ -45,6 +51,12 @@ public class ObjectAnchor : MonoBehaviour {
 		rb.useGravity = false;
 		is_glued = false;
 		Destroy(glue);
+
+		if(hand_controller.is_left_hand()){
+			OVRInput.SetControllerVibration(0.05f, 0.05f, OVRInput.Controller.LTouch);
+        } else {
+			OVRInput.SetControllerVibration( 0.05f, 0.05f, OVRInput.Controller.RTouch);
+        }
 
 		//for case of containeroverriding the parenting of a container
 		//glued = false; 
@@ -93,6 +105,12 @@ public class ObjectAnchor : MonoBehaviour {
 		current_position = this.transform.position;
 
 		moving = true;
+
+		if(hand_controller.is_left_hand()){
+			OVRInput.SetControllerVibration(0.05f, 0.05f, OVRInput.Controller.LTouch);
+        } else {
+			OVRInput.SetControllerVibration( 0.05f, 0.05f, OVRInput.Controller.RTouch);
+        }
 	}
 
 	public virtual void detach_from ( HandController hand_controller ) {
@@ -113,7 +131,7 @@ public class ObjectAnchor : MonoBehaviour {
 
 	public virtual bool is_available () { return hand_controller == null; }
 
-	public virtual float get_grasping_radius () { return graspingRadius; }
+	public virtual double get_grasping_radius () { return graspingRadius; }
 
 	public Vector3 velocity () {return Velocity;}
 

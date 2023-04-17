@@ -57,7 +57,7 @@ public class HandController : MonoBehaviour {
 	}
 
 	protected bool is_interacting(){
-		return OVRInput.Get(OVRInput.Button.Three );
+		return OVRInput.Get(OVRInput.Button.Four);
 	}
 
 	public Vector3 velocity () {return Velocity;}
@@ -143,7 +143,7 @@ public class HandController : MonoBehaviour {
 
 				
 				// Grab this object
-				activated_obj.OnInteract();
+				activated_obj.OnInteract(this);
 
 				//desactivate not implemented yet because not needed yet
 			}
@@ -151,8 +151,8 @@ public class HandController : MonoBehaviour {
 		}
 
 		if(playerController.GetMode()){
-			Debug.LogWarning(OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger));
-			if(OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) == 0){
+			//Debug.LogWarning(OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger));
+			//if(OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger) < 0.5){
 				int best_object_id = -1;
 				float best_object_distance = float.MaxValue;
 				float oject_distance;
@@ -175,7 +175,7 @@ public class HandController : MonoBehaviour {
 				if ( best_object_id != -1 ) {
 					transformable_in_the_scene[best_object_id].Change(0);
 				}
-			}
+			//}
 		}
 
 		// Check if there is a change in the grasping state (i.e. an edge) otherwise do nothing
@@ -183,8 +183,8 @@ public class HandController : MonoBehaviour {
 
 		Vector3 target = new Vector3(0,0,0);
 
-		bool b_4 = OVRInput.Get(OVRInput.Button.Four, OVRInput.Controller.Touch);
-		if(!b_4){
+		bool b_3_1 = OVRInput.Get(OVRInput.Button.Three, OVRInput.Controller.Touch) || (OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.Touch) && !playerController.GetMode());
+		if(!b_3_1){
 			if ( marker_prefab_instanciated != null ) Destroy( marker_prefab_instanciated );
 			marker_prefab_instanciated = null;
 		}else{
@@ -220,8 +220,8 @@ public class HandController : MonoBehaviour {
 				// Skip object requiring special upgrades
 				if ( !anchors_in_the_scene[i].can_be_grasped_by( playerController ) ) continue;
 
-				if(b_4){
-					oject_distance = Vector3.Distance( target, anchors_in_the_scene[i].transform.position ) - marker.GetComponent<Renderer>().bounds.size.x;
+				if(b_3_1){
+					oject_distance = Vector3.Distance( target, anchors_in_the_scene[i].transform.position);
 					Debug.LogWarning(oject_distance);
 				}else{
 					// Compute the distance to the object
@@ -244,7 +244,7 @@ public class HandController : MonoBehaviour {
 				// Log the grasp
 				//Debug.LogWarningFormat( "{0} grasped {1}", this.transform.parent.name, object_grasped.name );
 
-				if(!b_4){
+				if(!b_3_1){
 					// Grab this object
 					object_grasped.attach_to( this );
 				}else{
@@ -285,5 +285,15 @@ public class HandController : MonoBehaviour {
 
 	void OnDestroy(){
       anchors_in_the_scene = null;
+	  transformable_in_the_scene = null;
+	  interactables_in_the_scene = null;
+	}
+
+	public bool is_left_hand(){
+		if (handType == HandType.LeftHand){
+			return true;
+		} else {
+			return false;
+		}
 	}
 }

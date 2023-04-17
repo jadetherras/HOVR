@@ -31,7 +31,7 @@ public class GodMove : MonoBehaviour {
 	protected Vector3 controllerPos;
 
 	void Start(){
-		gos = GameObject.FindGameObjectsWithTag("MoveItem");
+		if(gos == null) gos = GameObject.FindGameObjectsWithTag("MoveItem");
 	}
 
 	protected Vector2 previous_b_up = new Vector2(0,0);
@@ -216,12 +216,16 @@ public class GodMove : MonoBehaviour {
 					// Place the marker to the targeted position
 					marker_prefab_instanciated.transform.position = target_point;
 					previous_b_up = b_up;
+					this.GetComponent<CurvedLigne>().Setpoint1(rightHand.transform.position);
+					this.GetComponent<CurvedLigne>().Setpoint3(target_point);
+					this.GetComponent<CurvedLigne>().Draw();
 				}else{
 					if(b_up.y < 0.85 && previous_b_up.y >= 0.85 && !player.GetComponent<MainPlayerController>().GetMode()){
 						if ( marker_prefab_instanciated != null ) Destroy( marker_prefab_instanciated );
 						marker_prefab_instanciated = null;
 						player.GetComponent<CharacterController>().Move(target_point - player.transform.position);
 						previous_b_up = b_up;
+						this.GetComponent<CurvedLigne>().Clean();
 					}
 				}
 			}
@@ -230,6 +234,7 @@ public class GodMove : MonoBehaviour {
 			if ( marker_prefab_instanciated_2 != null ) Destroy( marker_prefab_instanciated_2 );
 			marker_prefab_instanciated = null;
 			marker_prefab_instanciated_2 = null;
+			this.GetComponent<CurvedLigne>().Clean();
 		}
 	}
 
@@ -251,4 +256,8 @@ public class GodMove : MonoBehaviour {
 		target_point = hit.point;
 		return true;
 	}
+
+	void OnDestroy(){
+		gos = null;
+	} 
 }
