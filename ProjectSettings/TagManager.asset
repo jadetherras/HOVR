@@ -10,6 +10,7 @@ TagManager:
   - Lantern
   - MoveItem
   - Container
+  - Tool
   layers:
   - Default
   - TransparentFX

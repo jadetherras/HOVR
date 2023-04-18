@@ -38,15 +38,15 @@ public class GodMove : MonoBehaviour {
 	void Update () {
 		pointing_hand = rightHand;
 
-		bool b_1 = OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.Touch);
-		bool b_2 = OVRInput.Get(OVRInput.Button.Two, OVRInput.Controller.Touch);
+		//bool b_1 = OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.Touch);
+		//bool b_2 = OVRInput.Get(OVRInput.Button.Two, OVRInput.Controller.Touch);
 		Vector2 b_up = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
 
 		// Make sure the pointing hand is still pinched otherwise reset the pointing hand to null
-		if (b_up.y < 0.85 && previous_b_up.y < 0.85 && !b_1 && !b_2) {
+		if (b_up.y < 0.85 && previous_b_up.y < 0.85){ //&& !b_1 && !b_2) {
 			pointing_hand = null;
 			if ( marker_prefab_instanciated != null ) Destroy( marker_prefab_instanciated );
-			if ( marker_prefab_instanciated_2 != null ) Destroy( marker_prefab_instanciated_2 );
+			//if ( marker_prefab_instanciated_2 != null ) Destroy( marker_prefab_instanciated_2 );
 			// Remove the cursor
 			moveCommand = 0;
 			return;
@@ -56,7 +56,8 @@ public class GodMove : MonoBehaviour {
 		Vector3 target_point;
 		// Instantiate the marker prefab if it doesn't already exists and place it to the targeted position
 		if ( moveCommand == 0 && aim_with( pointing_hand, out target_point )){
-			if(player.GetComponent<MainPlayerController>().GetMode() && (b_1 || b_2)){
+			/*
+			if(player.GetComponent<MainPlayerController>().GetMode()) && (b_1 || b_2)){
 				
 				float distance = 50f;
 				Vector3 position = target_point;
@@ -211,29 +212,30 @@ public class GodMove : MonoBehaviour {
 					}
 				
 			}else{
-				if(b_up.y >= 0.85 && !player.GetComponent<MainPlayerController>().GetMode()){
-					if ( marker_prefab_instanciated == null ) marker_prefab_instanciated = GameObject.Instantiate( marker, this.transform );
-					// Place the marker to the targeted position
-					marker_prefab_instanciated.transform.position = target_point;
+			*/
+			if(b_up.y >= 0.85 && !player.GetComponent<MainPlayerController>().GetMode()){
+				if ( marker_prefab_instanciated == null ) marker_prefab_instanciated = GameObject.Instantiate( marker, this.transform );
+				// Place the marker to the targeted position
+				marker_prefab_instanciated.transform.position = target_point;
+				previous_b_up = b_up;
+				this.GetComponent<CurvedLigne>().Setpoint1(rightHand.transform.position);
+				this.GetComponent<CurvedLigne>().Setpoint3(target_point);
+				this.GetComponent<CurvedLigne>().Draw();
+			}else{
+				if(b_up.y < 0.85 && previous_b_up.y >= 0.85 && !player.GetComponent<MainPlayerController>().GetMode()){
+					if ( marker_prefab_instanciated != null ) Destroy( marker_prefab_instanciated );
+					marker_prefab_instanciated = null;
+					player.GetComponent<CharacterController>().Move(target_point - player.transform.position);
 					previous_b_up = b_up;
-					this.GetComponent<CurvedLigne>().Setpoint1(rightHand.transform.position);
-					this.GetComponent<CurvedLigne>().Setpoint3(target_point);
-					this.GetComponent<CurvedLigne>().Draw();
-				}else{
-					if(b_up.y < 0.85 && previous_b_up.y >= 0.85 && !player.GetComponent<MainPlayerController>().GetMode()){
-						if ( marker_prefab_instanciated != null ) Destroy( marker_prefab_instanciated );
-						marker_prefab_instanciated = null;
-						player.GetComponent<CharacterController>().Move(target_point - player.transform.position);
-						previous_b_up = b_up;
-						this.GetComponent<CurvedLigne>().Clean();
-					}
+					this.GetComponent<CurvedLigne>().Clean();
 				}
 			}
+			//}
 		}else{
 			if ( marker_prefab_instanciated != null ) Destroy( marker_prefab_instanciated );
-			if ( marker_prefab_instanciated_2 != null ) Destroy( marker_prefab_instanciated_2 );
+			//if ( marker_prefab_instanciated_2 != null ) Destroy( marker_prefab_instanciated_2 );
 			marker_prefab_instanciated = null;
-			marker_prefab_instanciated_2 = null;
+			//marker_prefab_instanciated_2 = null;
 			this.GetComponent<CurvedLigne>().Clean();
 		}
 	}

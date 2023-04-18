@@ -16,13 +16,12 @@ public class SceneChanger : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {   
         bool b_4 = OVRInput.Get(OVRInput.Button.Four, OVRInput.Controller.Touch);
 
         if(b_4)
         {
-            if(test)
+            if(playerHuman.GetComponent<MainPlayerController>().GetB4())
             {
                 if(playerHuman.GetComponent<MainPlayerController>().GetMode())
                 {
@@ -33,11 +32,12 @@ public class SceneChanger : MonoBehaviour
 
                     playerHuman.GetComponent<CharacterController>().enabled = true;
                     playerHuman.GetComponent<MainPlayerController>().SetMode(false);
-                    test = false;
+                    playerHuman.GetComponent<MainPlayerController>().SetB4(false);
                 }else
                 {
                     if(!playerHuman.GetComponent<MainPlayerController>().GetMode() && playerHuman.GetComponent<MainPlayerController>().IsNearAutel())
                     {
+                        player.transform.position = playerHuman.transform.position;
                         player.SetActive(true);
                         playerHuman.GetComponent<CharacterController>().enabled = false;
                         playerHuman.transform.localScale = new Vector3(10,10,10);
@@ -45,14 +45,14 @@ public class SceneChanger : MonoBehaviour
 
                         playerHuman.GetComponent<CharacterController>().enabled = true;
                         playerHuman.GetComponent<MainPlayerController>().SetMode(true);
-                        test = false;
+                        playerHuman.GetComponent<MainPlayerController>().SetB4(false);
                         playerHuman.GetComponent<MainPlayerController>().SetNearAutel(false);
                     }
                 }
             }
         }else
         {
-            test = true;
+            playerHuman.GetComponent<MainPlayerController>().SetB4(true);
         }
     }
 }

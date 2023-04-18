@@ -6,6 +6,9 @@ public class ObjectAnchor : MonoBehaviour {
 	[Header( "Grasping Properties" )]
 	public double graspingRadius = 0;
 
+	[Header( "Tool Properties" )]
+	public Vector3 paddingRot;
+
 	//avoid distortion of object when inside container
 	private Vector3 originalScale;
 
@@ -39,11 +42,18 @@ public class ObjectAnchor : MonoBehaviour {
 	protected HandController hand_controller = null;
 
 	
-	public virtual void attach_to ( HandController hand_controller ) {
+	public virtual void attach_to ( HandController hand_controller , bool god) {
+		if(this.gameObject.tag == "MoveItem" && !god){
+			return;
+		}
+
 		// Store the hand controller in memory
 		this.hand_controller = hand_controller;
 
-		
+		if(this.gameObject.tag == "Tool"){
+			this.transform.eulerAngles = new Vector3(paddingRot.x + hand_controller.transform.eulerAngles.x, paddingRot.y + hand_controller.transform.eulerAngles.y , paddingRot.z + hand_controller.transform.eulerAngles.z);
+			this.transform.position = hand_controller.transform.position;
+		}
 
 		// Set the object to be placed in the hand controller referential
 		transform.SetParent( hand_controller.transform );
@@ -74,6 +84,9 @@ public class ObjectAnchor : MonoBehaviour {
 				moving = false;
 				transform.SetParent( hand_controller.transform );
 				rb.isKinematic = true;
+				rb.useGravity = false;
+				is_glued = false;
+				Destroy(glue);
 				return;
 			}
 
@@ -98,7 +111,14 @@ public class ObjectAnchor : MonoBehaviour {
 		}
 	}
 
-	public virtual void long_attach_to ( HandController hand_controller ) {
+	public virtual void long_attach_to ( HandController hand_controller , bool god) {
+		if(this.gameObject.tag == "MoveItem" && !god){
+			return;
+		}
+
+		if(this.gameObject.tag == "Tool"){
+			this.transform.eulerAngles = new Vector3(paddingRot.x + hand_controller.transform.eulerAngles.x, paddingRot.y + hand_controller.transform.eulerAngles.y , paddingRot.z + hand_controller.transform.eulerAngles.z);
+		}
 		// Store the hand controller in memory
 		this.hand_controller = hand_controller;
 
@@ -123,10 +143,23 @@ public class ObjectAnchor : MonoBehaviour {
 		// Set the object to be placed in the original transform parent
 		transform.SetParent( initial_transform_parent );
 		rb.isKinematic = false;
-		rb.useGravity = true;
+		if(this.gameObject.tag == "MoveItem"){
+			float x = Mathf.Round(this.transform.position.x);
+			float y = Mathf.Round(this.transform.position.y);
+			float z = Mathf.Round(this.transform.position.z);
+
+			float rx = Mathf.Round(this.transform.eulerAngles.x/45f);
+			float ry = Mathf.Round(this.transform.eulerAngles.y/45f);
+			float rz = Mathf.Round(this.transform.eulerAngles.z/45f);
+
+			this.transform.position = new Vector3(x, y, z);
+			this.transform.eulerAngles = new Vector3(45 * rx, 45 * ry, 45 * rz);
+		}else{
+			rb.useGravity = true;
+			rb.velocity = hand_controller.velocity();
+		}
 		i = 0;
 		moving = false;
-		rb.velocity = hand_controller.velocity();
 	}
 
 	public virtual bool is_available () { return hand_controller == null; }

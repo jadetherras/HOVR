@@ -7,6 +7,15 @@ public class MainPlayerController : MonoBehaviour {
 	protected List<Type> list_of_player_upgrades = new List<Type>();
 	protected bool godMode = false;
 	protected bool nearAutel = false;
+	protected bool b_4_released = false;
+
+	public void SetB4(bool state){
+		b_4_released = state;
+	}
+
+	public bool GetB4(){
+		return b_4_released;
+	}
 
 	public void acquire_item ( CollectibleItem item ) {
 		// Check that the upgrade is not already acquired

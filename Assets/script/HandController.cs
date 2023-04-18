@@ -15,6 +15,9 @@ public class HandController : MonoBehaviour {
 	[Header( "Marker" )]
 	public GameObject marker;
 
+	[Header( "Perso" )]
+	public GameObject perso;
+
 	// Store all gameobjects containing an Anchor
 	// N.B. This list is static as it is the same list for all hands controller
 	// thus there is no need to duplicate it for each instance
@@ -28,7 +31,9 @@ public class HandController : MonoBehaviour {
 
 	void Start () {
 		// Prevent multiple fetch
+		perso.SetActive(true);
 		if ( anchors_in_the_scene == null ) anchors_in_the_scene = GameObject.FindObjectsOfType<ObjectAnchor>();
+		perso.SetActive(false);
 		if ( transformable_in_the_scene == null ) transformable_in_the_scene = GameObject.FindObjectsOfType<Transformable>();
 		//LENA
 		if ( interactables_in_the_scene == null ) interactables_in_the_scene = GameObject.FindObjectsOfType<Interactable>();
@@ -183,7 +188,7 @@ public class HandController : MonoBehaviour {
 
 		Vector3 target = new Vector3(0,0,0);
 
-		bool b_3_1 = OVRInput.Get(OVRInput.Button.Three, OVRInput.Controller.Touch) || (OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.Touch) && !playerController.GetMode());
+		bool b_3_1 = (OVRInput.Get(OVRInput.Button.Three, OVRInput.Controller.Touch) && is_left_hand() )|| ((OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.Touch) && !is_left_hand()));
 		if(!b_3_1){
 			if ( marker_prefab_instanciated != null ) Destroy( marker_prefab_instanciated );
 			marker_prefab_instanciated = null;
@@ -246,9 +251,9 @@ public class HandController : MonoBehaviour {
 
 				if(!b_3_1){
 					// Grab this object
-					object_grasped.attach_to( this );
+					object_grasped.attach_to( this, playerController.GetMode() );
 				}else{
-					object_grasped.long_attach_to(this);
+					object_grasped.long_attach_to(this, playerController.GetMode());
 				}
 			}
 

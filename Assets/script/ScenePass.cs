@@ -27,7 +27,11 @@ public class ScenePass : InteractiveItem
         }
 	}
 
-    public override void interacted_with ( MainPlayerController player ) { Pass(); }
+    public override void interacted_with ( MainPlayerController player ) { 
+        if(!player.GetMode()){
+            Pass(); 
+        }
+    }
 
     public override void exit ( MainPlayerController player ) {}
 

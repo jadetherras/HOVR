@@ -14,9 +14,6 @@ public class Autel : Interactable {
 
     //private LightToggler light;
     //component for light and color change in function of toggle
-    [Header("Player perso")]
-    public GameObject player;
-    public GameObject god;
 
     [Header("Player cameras")]
     public GameObject playerHuman;
@@ -59,7 +56,9 @@ public class Autel : Interactable {
 		OVRInput.SetControllerVibration(0.3f, 0.05f, OVRInput.Controller.LTouch);
 		OVRInput.SetControllerVibration( 0.3f, 0.05f, OVRInput.Controller.RTouch);
 
-        playerHuman.GetComponent<MainPlayerController>().SetNearAutel(true);
+        if(playerHuman.GetComponent<MainPlayerController>().GetB4()){
+            playerHuman.GetComponent<MainPlayerController>().SetNearAutel(true);
+        }
         
     }
 
