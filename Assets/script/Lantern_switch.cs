@@ -35,7 +35,13 @@ public class Lantern_switch : Interactable {
     private AudioSource audiosource;
 
     public int givecount () {
+
         return activeSwitchCount;
+    }
+
+    public void restart (int max =5) {
+        maxSwitchCount = max;
+        activeSwitchCount = 0;
     }
 
     public int givemaxcount () {
@@ -58,6 +64,7 @@ public class Lantern_switch : Interactable {
         //_onColor = _material.GetColor(EMISSION_COLOR);
 
         //light = GetComponent<LightToggler>();
+        restart();
     }
 
      private void OnDestroy()

@@ -40,7 +40,7 @@ public class SceneChanger : MonoBehaviour
                         player.transform.position = playerHuman.transform.position;
                         player.SetActive(true);
                         playerHuman.GetComponent<CharacterController>().enabled = false;
-                        playerHuman.transform.localScale = new Vector3(10,10,10);
+                        playerHuman.transform.localScale = new Vector3(15,15,15);
                         playerHuman.transform.position = god.transform.position;
 
                         playerHuman.GetComponent<CharacterController>().enabled = true;
