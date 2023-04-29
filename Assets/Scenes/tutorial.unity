@@ -857,7 +857,7 @@ GameObject:
   m_Component:
   - component: {fileID: 232676667}
   - component: {fileID: 232676668}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6261,7 +6261,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8233043909262996099, guid: 2bdb117ac02ae634b950bb7343a9ff42, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 2bdb117ac02ae634b950bb7343a9ff42, type: 3}
 --- !u!154 &8263010348228965434
 TerrainCollider:

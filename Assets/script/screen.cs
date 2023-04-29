@@ -43,9 +43,9 @@ public class screen : InteractiveItem {
 		plate.SetActive(false);
 
 		if (video != null) {
+			video.GetComponent<VideoPlayer>().Stop();
 			video.SetActive(false);
 			//V.Stop();
-			video.GetComponent<VideoPlayer>().Stop();
 		}
 		
 	}
