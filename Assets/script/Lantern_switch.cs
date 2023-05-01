@@ -29,8 +29,8 @@ public class Lantern_switch : Interactable {
 
     private Material _material;
 
-    private Color _offColor = Color.red;
-    private Color _onColor = Color.green;
+    public Color _offColor = Color.red;
+    public Color _onColor = Color.green;
 
     private AudioSource audiosource;
 

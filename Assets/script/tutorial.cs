@@ -4,40 +4,27 @@ using System.Collections.Generic;
 
 public class tutorial : MonoBehaviour {
 
-    protected List<GameObject> StepsList = new List<GameObject>();
-    protected int current = 0;
-    protected int time = 0;
+    public List<GameObject> StepsList = new List<GameObject>();
 
     void Start () {
-        GameObject[] Steps = GameObject.FindGameObjectsWithTag ("tutorial");
-        foreach (GameObject step in Steps) {
-            StepsList.Add(step);
-        }
-   //Sorting list and check it count
-   if (StepsList.Count > 0) {
-        StepsList.Sort(delegate(GameObject a, GameObject b) {
-            return (a.GetComponent<Step>().number).CompareTo(b.GetComponent<Step>().number);
-        });
-        }
-    
-    passStep();
-
+        Debug.LogWarning("here the count");
+        Debug.LogWarning(StepsList.Count);
+        //pass step 0
+        passStep();
     }
 
     void Update() {
-        ++time;
-        if (time == 250) {
-            time = 0;
-            ++current;
+
+        if (StepsList.Count > 0 && StepsList[0].GetComponent<Step>().active()) {
+            Debug.LogWarning("goo");
             passStep();
         }
     }
 
     void passStep() {
-        while ( StepsList.Count != 0 && StepsList[0].GetComponent<Step>().number == current) {
-            StepsList[0].SetActive(true);
-            StepsList.RemoveAt(0);
-        }
+        Debug.LogWarning("pass the step");
+        StepsList[0].SetActive(true);
+        StepsList.RemoveAt(0);
     }
 
 }
