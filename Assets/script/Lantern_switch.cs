@@ -50,8 +50,6 @@ public class Lantern_switch : Interactable {
     // Start is called before the first frame update (ev. use Awake instead)
     void Start()
     {
-        //toggle = GetComponent<Toggle>();
-        //toggle.onValueChanged.AddListener(OnToggleValueChanged);
         if ( GetComponent<AudioSource>() != null){
             audiosource = GetComponent<AudioSource>();
         } else {
@@ -59,12 +57,11 @@ public class Lantern_switch : Interactable {
         }
        
          _material = GetComponent<Renderer>().material;
-        // _material.SetColor("_Color", _offColor);
         _material.color = new Color(1,0,0);
         //_onColor = _material.GetColor(EMISSION_COLOR);
 
         //light = GetComponent<LightToggler>();
-        restart();
+        //restart();
     }
 
      private void OnDestroy()

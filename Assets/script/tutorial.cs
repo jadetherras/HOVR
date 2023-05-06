@@ -4,7 +4,9 @@ using System.Collections.Generic;
 
 public class tutorial : MonoBehaviour {
 
-    public List<GameObject> StepsList = new List<GameObject>();
+    public List<GameObject> StepsList;
+    public List<Lantern_switch> Pass;
+    //protected int i = 0;
 
     void Start () {
         Debug.LogWarning("here the count");
@@ -14,11 +16,16 @@ public class tutorial : MonoBehaviour {
     }
 
     void Update() {
-
-        if (StepsList.Count > 0 && StepsList[0].GetComponent<Step>().active()) {
+        if (StepsList.Count > 0 && Pass.Count > 0 && Pass[0].IsActive) {
             Debug.LogWarning("goo");
             passStep();
         }
+        //if(StepsList.Count > 0 && i == 300) {
+        //    Debug.LogWarning("pass activate");
+        //    passStep();
+        //}
+        //i = i+1;
+
     }
 
     void passStep() {
