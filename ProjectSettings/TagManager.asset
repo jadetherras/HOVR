@@ -11,6 +11,7 @@ TagManager:
   - MoveItem
   - Container
   - Tool
+  - TowerFloor
   layers:
   - Default
   - TransparentFX

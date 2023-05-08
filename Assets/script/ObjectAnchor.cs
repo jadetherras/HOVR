@@ -9,6 +9,9 @@ public class ObjectAnchor : MonoBehaviour {
 	[Header( "Tool Properties" )]
 	public Vector3 paddingRot;
 
+	[Header( "Tower Manager" )]
+	public GameObject towerManag;
+
 	//avoid distortion of object when inside container
 	private Vector3 originalScale;
 
@@ -43,7 +46,7 @@ public class ObjectAnchor : MonoBehaviour {
 
 	
 	public virtual void attach_to ( HandController hand_controller , bool god) {
-		if(this.gameObject.tag == "MoveItem" && !god){
+		if((this.gameObject.tag == "MoveItem" || this.gameObject.tag == "TowerFloor") && !god){
 			return;
 		}
 
@@ -53,6 +56,12 @@ public class ObjectAnchor : MonoBehaviour {
 		if(this.gameObject.tag == "Tool"){
 			this.transform.eulerAngles = new Vector3(paddingRot.x + hand_controller.transform.eulerAngles.x, paddingRot.y + hand_controller.transform.eulerAngles.y , paddingRot.z + hand_controller.transform.eulerAngles.z);
 			this.transform.position = hand_controller.transform.position;
+		}else{
+			if(this.gameObject.tag == "TowerFloor"){
+				this.gameObject.SetActiveRecursively(false);
+				this.gameObject.SetActive(true);
+				this.gameObject.GetComponent<Collider>().enabled = false;
+			}
 		}
 
 		// Set the object to be placed in the hand controller referential
@@ -112,7 +121,7 @@ public class ObjectAnchor : MonoBehaviour {
 	}
 
 	public virtual void long_attach_to ( HandController hand_controller , bool god) {
-		if(this.gameObject.tag == "MoveItem" && !god){
+		if((this.gameObject.tag == "MoveItem" || this.gameObject.tag == "TowerFloor") && !god){
 			return;
 		}
 
@@ -155,8 +164,14 @@ public class ObjectAnchor : MonoBehaviour {
 			this.transform.position = new Vector3(x, y, z);
 			this.transform.eulerAngles = new Vector3(45 * rx, 45 * ry, 45 * rz);
 		}else{
-			rb.useGravity = true;
-			rb.velocity = hand_controller.velocity();
+			if(this.gameObject.tag == "TowerFloor"){
+				towerManag.GetComponent<Tower>().SetNearest(true);
+				this.gameObject.GetComponent<Collider>().enabled = true;
+				this.gameObject.SetActiveRecursively(true);
+			}else{
+				rb.useGravity = true;
+				rb.velocity = hand_controller.velocity();
+			}
 		}
 		i = 0;
 		moving = false;

@@ -189,7 +189,7 @@ public class HandController : MonoBehaviour {
 		Vector3 target = new Vector3(0,0,0);
 
 		bool b_3_1 = (OVRInput.Get(OVRInput.Button.Three, OVRInput.Controller.Touch) && is_left_hand() )|| ((OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.Touch) && !is_left_hand()));
-		if(!b_3_1){
+		if(!b_3_1 || playerController.GetMode()){
 			if ( marker_prefab_instanciated != null ) Destroy( marker_prefab_instanciated );
 			marker_prefab_instanciated = null;
 		}else{
@@ -225,7 +225,7 @@ public class HandController : MonoBehaviour {
 				// Skip object requiring special upgrades
 				if ( !anchors_in_the_scene[i].can_be_grasped_by( playerController ) ) continue;
 
-				if(b_3_1){
+				if(b_3_1 && !playerController.GetMode()){
 					oject_distance = Vector3.Distance( target, anchors_in_the_scene[i].transform.position);
 					Debug.LogWarning(oject_distance);
 				}else{
