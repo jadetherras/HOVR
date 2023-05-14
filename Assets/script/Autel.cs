@@ -69,7 +69,7 @@ public class Autel : Interactable {
     {
         IsActive = isToggled;
 
-       // if (OnSwitchToggle != null) //ché pas trop ce que ça fait, ça {   OnSwitchToggle.Invoke(isToggled);  }
+       // if (OnSwitchToggle != null) //chï¿½ pas trop ce que ï¿½a fait, ï¿½a {   OnSwitchToggle.Invoke(isToggled);  }
 
         // Check if all five switches are active
         if (isToggled)

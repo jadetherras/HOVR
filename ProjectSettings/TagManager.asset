@@ -11,7 +11,9 @@ TagManager:
   - MoveItem
   - Container
   - Tool
+  - tutorial
   - TowerFloor
+  - Perso
   layers:
   - Default
   - TransparentFX

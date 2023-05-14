@@ -501,7 +501,8 @@ public class OVRPlayerController : MonoBehaviour
 			}
 			else
 			{
-				transform.RotateAround(CameraRig.centerEyeAnchor.position, Vector3.up, euler.y);
+				//transform.RotateAround(CameraRig.centerEyeAnchor.position, Vector3.up, euler.y);
+				transform.RotateAround(this.transform.position, Vector3.up, euler.y);
 			}
 		}
 #endif

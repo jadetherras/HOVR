@@ -17,10 +17,10 @@ public class Lantern_switch : Interactable {
 
     public static int activeSwitchCount = 0; // Static counter to keep track of the number of active switches
 
+    public static int maxSwitchCount = 5; // Static counter to keep track of the number of active switches
+
     //private LightToggler light;
     //component for light and color change in function of toggle
-    
-
 
 
     private const string EMISSION_COLOR = "_EmissionColor";
@@ -29,16 +29,27 @@ public class Lantern_switch : Interactable {
 
     private Material _material;
 
-    private Color _offColor = Color.red;
-    private Color _onColor = Color.green;
+    public Color _offColor = Color.red;
+    public Color _onColor = Color.green;
 
     private AudioSource audiosource;
 
+    public int givecount () {
+
+        return activeSwitchCount;
+    }
+
+    public void restart (int max =5) {
+        maxSwitchCount = max;
+        activeSwitchCount = 0;
+    }
+
+    public int givemaxcount () {
+        return maxSwitchCount;
+    }
     // Start is called before the first frame update (ev. use Awake instead)
     void Start()
     {
-        //toggle = GetComponent<Toggle>();
-        //toggle.onValueChanged.AddListener(OnToggleValueChanged);
         if ( GetComponent<AudioSource>() != null){
             audiosource = GetComponent<AudioSource>();
         } else {
@@ -46,11 +57,11 @@ public class Lantern_switch : Interactable {
         }
        
          _material = GetComponent<Renderer>().material;
-        // _material.SetColor("_Color", _offColor);
         _material.color = new Color(1,0,0);
         //_onColor = _material.GetColor(EMISSION_COLOR);
 
         //light = GetComponent<LightToggler>();
+        //restart();
     }
 
      private void OnDestroy()
@@ -93,7 +104,7 @@ public class Lantern_switch : Interactable {
 			    OVRInput.SetControllerVibration( 0.3f, 0.05f, OVRInput.Controller.RTouch);
             }
 
-            if (activeSwitchCount == 5){
+            if (activeSwitchCount == maxSwitchCount){
             Debug.Log("You regained some of your powers and can access the next level!");
 
             // Trigger an event to notify that all switches are active

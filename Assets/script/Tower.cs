@@ -4,22 +4,31 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-
+    public MainPlayerController player;
     public List<GameObject> tower;
     public List<Lantern_switch> lanterns;
     public int size;
     public List<int> towerOrder;
+    public List<int> towerAngle;
+    public List<int> floor2Angle;
+    public GameObject DeactivateOnLant1;
+    public GameObject DeactivateOnAllLants;
 
     private List<Vector3> posFloor = new List<Vector3>();
     private List<Vector3> rotFloor = new List<Vector3>();
     private List<int> floorOrder = new List<int>(); //give a floor and get it's order
     private List<int> orderFloor = new List<int>(); //give an order and get it's floor
+    private List<Vector3> PosLantern = new List<Vector3>();
+    private bool rightSecondFloor1 = false;
+    private bool rightSecondFloor2 = false;
+    private bool rightSecondFloor3 = false;
     // Start is called before the first frame update
     void Start()
     {
         for (int i = 0; i < tower.Count; i++){
             floorOrder.Add(i);
             orderFloor.Add(i);
+            PosLantern.Add(new Vector3(lanterns[i].transform.position.x, lanterns[i].transform.position.y - 1, lanterns[i].transform.position.z));
             posFloor.Add(tower[i].transform.position);
             rotFloor.Add(tower[i].transform.rotation.eulerAngles);
         }
@@ -28,6 +37,17 @@ public class Tower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(lanterns[0].IsActive){
+            DeactivateOnLant1.SetActiveRecursively(false);
+            tower[0].GetComponent<Renderer>().material.color = new Color(1,0,0);
+        }
+        if(lanterns[1].IsActive){
+            tower[1].GetComponent<Renderer>().material.color = new Color(0,1,0);
+        }
+        if(lanterns[2].IsActive){
+            tower[2].GetComponent<Renderer>().material.color = new Color(0,0,1);
+        }
+
         for (int i = 0; i < tower.Count; i++){ 
             float currentPos = tower[i].transform.position.y;
             int order = floorOrder[i];
@@ -100,6 +120,7 @@ public class Tower : MonoBehaviour
     public void SetNearest(bool fromDetach){
         bool allColor = true;
         bool rightOrder = true;
+        bool rightAngle = true;
 
         for (int i = 0; i < tower.Count; i++){
             int order = floorOrder[i];
@@ -113,6 +134,25 @@ public class Tower : MonoBehaviour
             tower[0].GetComponent<Renderer>().material.color = new Color(0,1,0);
             tower[1].GetComponent<Renderer>().material.color = new Color(0,1,0);
             tower[2].GetComponent<Renderer>().material.color = new Color(0,1,0);
+            rightAngle = rightAngle && (tower[i].transform.rotation.eulerAngles.y == towerAngle[i]);
+        }
+
+        if(fromDetach){
+            rightSecondFloor1 = (floorOrder[2] == 0 && tower[2].transform.rotation.eulerAngles.y == floor2Angle[0]) || rightSecondFloor1;
+            rightSecondFloor2 = (floorOrder[2] == 1 && tower[2].transform.rotation.eulerAngles.y == floor2Angle[1]) || rightSecondFloor2;
+            rightSecondFloor3 = (floorOrder[2] == 2 && tower[2].transform.rotation.eulerAngles.y == floor2Angle[2]) || rightSecondFloor3;
+
+            if(rightAngle){
+                lanterns[1].transform.position = PosLantern[1];
+            }
+
+            if(rightSecondFloor3 && rightSecondFloor2 && rightSecondFloor1){
+                lanterns[2].transform.position = PosLantern[2];
+            }
+
+            if(allColor && rightOrder){
+                DeactivateOnAllLants.SetActiveRecursively(false);
+            }
         }
     }
 }

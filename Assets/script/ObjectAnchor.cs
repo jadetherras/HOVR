@@ -152,6 +152,7 @@ public class ObjectAnchor : MonoBehaviour {
 		// Set the object to be placed in the original transform parent
 		transform.SetParent( initial_transform_parent );
 		rb.isKinematic = false;
+		
 		if(this.gameObject.tag == "MoveItem"){
 			float x = Mathf.Round(this.transform.position.x);
 			float y = Mathf.Round(this.transform.position.y);
@@ -161,10 +162,16 @@ public class ObjectAnchor : MonoBehaviour {
 			float ry = Mathf.Round(this.transform.eulerAngles.y/45f);
 			float rz = Mathf.Round(this.transform.eulerAngles.z/45f);
 
-			this.transform.position = new Vector3(x, y, z);
 			this.transform.eulerAngles = new Vector3(45 * rx, 45 * ry, 45 * rz);
+
+			this.transform.position = new Vector3(x, y, z);
 		}else{
 			if(this.gameObject.tag == "TowerFloor"){
+				float rx = Mathf.Round(this.transform.eulerAngles.x/45f);
+				float ry = Mathf.Round(this.transform.eulerAngles.y/45f);
+				float rz = Mathf.Round(this.transform.eulerAngles.z/45f);
+
+				this.transform.eulerAngles = new Vector3(45 * rx, 45 * ry, 45 * rz);
 				towerManag.GetComponent<Tower>().SetNearest(true);
 				this.gameObject.GetComponent<Collider>().enabled = true;
 				this.gameObject.SetActiveRecursively(true);
