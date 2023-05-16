@@ -12,7 +12,10 @@ public class tutorial : MonoBehaviour {
         Debug.LogWarning("here the count");
         Debug.LogWarning(StepsList.Count);
         //pass step 0
-        passStep();
+
+        foreach (var step in StepsList)  {
+            step.SetActive(false);
+        }
     }
 
     void Update() {
@@ -30,6 +33,7 @@ public class tutorial : MonoBehaviour {
 
     void passStep() {
         Debug.LogWarning("pass the step");
+        Pass.RemoveAt(0);
         StepsList[0].SetActive(true);
         StepsList.RemoveAt(0);
     }

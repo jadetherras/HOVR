@@ -4,7 +4,7 @@ using UnityEngine;
 public class ObjectAnchor : MonoBehaviour {
 
 	[Header( "Grasping Properties" )]
-	public double graspingRadius = 0;
+	public double graspingRadius = 3;
 
 	[Header( "Tool Properties" )]
 	public Vector3 paddingRot;
@@ -196,7 +196,7 @@ public class ObjectAnchor : MonoBehaviour {
 	protected GameObject glue; // = GameObject("Glue")	
 	protected bool is_glued = false;
 	void OnTriggerStay ( Collider other ) {
-		if (other.gameObject.tag == "Container"){
+		if (other.gameObject.tag == "Container" && !(this.gameObject.tag == "MoveItem" || this.gameObject.tag == "TowerFloor")){
 			//Debug.Log(glued);
 			if (this.is_available() && !is_glued){
 				is_contained = true;
