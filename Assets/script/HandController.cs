@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HandController : MonoBehaviour {
 
@@ -28,8 +29,11 @@ public class HandController : MonoBehaviour {
 
 	protected Vector3 lastPosition;
 	protected Vector3 Velocity;
+	protected Canvas menu;
 
 	void Start () {
+		//find menu canvas
+		Canvas menu = FindObjectOfType<Canvas>();
 		// Prevent multiple fetch
 		perso.SetActive(true);
 		if ( anchors_in_the_scene == null ) anchors_in_the_scene = GameObject.FindObjectsOfType<ObjectAnchor>();
@@ -114,6 +118,16 @@ public class HandController : MonoBehaviour {
 	/// This method handles the linking of object anchors to this hand controller
 	/// </summary>
 	protected void handle_controller_behavior () {
+		
+		//==============================================//
+		//Make the menu appear or disappear//
+		//==============================================//
+        if(OVRInput.Get( OVRInput.Button.Start)){
+			SceneManager.LoadScene("menu");
+            //menu.transform.gameObject.SetActive(!transform.gameObject.activeSelf);
+			//ev. need to make it appear in front of the eye
+			Debug.LogWarning("Menu should be on");
+        }
 		
 		//==============================================//
 		// Define the behavior when the hands wants to interact //
