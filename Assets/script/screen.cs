@@ -41,7 +41,7 @@ public class screen : InteractiveItem {
 	}
 
 	public override void exit( MainPlayerController player ) {
-		//plate.SetActive(false);
+		plate.SetActive(false);
 
 		if (video != null) {
 			video.GetComponent<VideoPlayer>().Stop();
