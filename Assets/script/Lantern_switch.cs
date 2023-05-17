@@ -61,7 +61,7 @@ public class Lantern_switch : Interactable {
         //_onColor = _material.GetColor(EMISSION_COLOR);
 
         //light = GetComponent<LightToggler>();
-        restart();
+        //restart();
     }
 
      private void OnDestroy()

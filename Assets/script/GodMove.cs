@@ -11,9 +11,6 @@ public class GodMove : MonoBehaviour {
 	[Header(" Player ")]
 	public GameObject player;
 
-	[Header(" Terrain ")]
-	public GameObject terrain;
-
 	[Header(" marker ")]
 	public GameObject marker;
 	public GameObject marker2;
@@ -32,14 +29,9 @@ public class GodMove : MonoBehaviour {
 	protected GameObject marker_prefab_instanciated_2 = null;
 	protected GameObject closest = null;
 	protected Vector3 controllerPos;
-	private Vector3 newPos;
-	private Vector3 startingPos;
-	public float floor;
 
 	void Start(){
 		if(gos == null) gos = GameObject.FindGameObjectsWithTag("MoveItem");
-		startingPos = terrain.transform.position;
-		newPos = startingPos;
 	}
 
 	protected Vector2 previous_b_up = new Vector2(0,0);
@@ -49,20 +41,6 @@ public class GodMove : MonoBehaviour {
 		//bool b_1 = OVRInput.Get(OVRInput.Button.One, OVRInput.Controller.Touch);
 		//bool b_2 = OVRInput.Get(OVRInput.Button.Two, OVRInput.Controller.Touch);
 		Vector2 b_up = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
-
-		if(b_up.y >= 0.85f && player.GetComponent<MainPlayerController>().GetMode()){
-			terrain.transform.position = newPos;
-			newPos.y += 0.1f;
-			if (newPos.y >= startingPos.y + floor) {
-				newPos.y = startingPos.y + floor;
-			}
-		} else if (b_up.y <= -0.85f && player.GetComponent<MainPlayerController>().GetMode()) {
-			terrain.transform.position = newPos;
-			newPos.y -= 0.1f;
-			if (newPos.y <= startingPos.y - floor) {
-				newPos.y = startingPos.y - floor;
-			}
-		}
 
 		// Make sure the pointing hand is still pinched otherwise reset the pointing hand to null
 		if (b_up.y < 0.85 && previous_b_up.y < 0.85){ //&& !b_1 && !b_2) {
@@ -235,24 +213,21 @@ public class GodMove : MonoBehaviour {
 				
 			}else{
 			*/
-
-			if (!player.GetComponent<MainPlayerController>().GetMode()) {
-				if(b_up.y >= 0.85){
-					if ( marker_prefab_instanciated == null ) marker_prefab_instanciated = GameObject.Instantiate( marker, this.transform );
-					// Place the marker to the targeted position
-					marker_prefab_instanciated.transform.position = target_point;
+			if(b_up.y >= 0.85 && !player.GetComponent<MainPlayerController>().GetMode()){
+				if ( marker_prefab_instanciated == null ) marker_prefab_instanciated = GameObject.Instantiate( marker, this.transform );
+				// Place the marker to the targeted position
+				marker_prefab_instanciated.transform.position = target_point;
+				previous_b_up = b_up;
+				this.GetComponent<CurvedLigne>().Setpoint1(rightHand.transform.position);
+				this.GetComponent<CurvedLigne>().Setpoint3(target_point);
+				this.GetComponent<CurvedLigne>().Draw();
+			}else{
+				if(b_up.y < 0.85 && previous_b_up.y >= 0.85 && !player.GetComponent<MainPlayerController>().GetMode()){
+					if ( marker_prefab_instanciated != null ) Destroy( marker_prefab_instanciated );
+					marker_prefab_instanciated = null;
+					player.GetComponent<CharacterController>().Move(target_point - player.transform.position);
 					previous_b_up = b_up;
-					this.GetComponent<CurvedLigne>().Setpoint1(rightHand.transform.position);
-					this.GetComponent<CurvedLigne>().Setpoint3(target_point);
-					this.GetComponent<CurvedLigne>().Draw();
-				}else{
-					if(b_up.y < 0.85 && previous_b_up.y >= 0.85){
-						if ( marker_prefab_instanciated != null ) Destroy( marker_prefab_instanciated );
-						marker_prefab_instanciated = null;
-						player.GetComponent<CharacterController>().Move(target_point - player.transform.position);
-						previous_b_up = b_up;
-						this.GetComponent<CurvedLigne>().Clean();
-					}
+					this.GetComponent<CurvedLigne>().Clean();
 				}
 			}
 			//}
