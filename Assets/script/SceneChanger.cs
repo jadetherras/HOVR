@@ -25,6 +25,7 @@ public class SceneChanger : MonoBehaviour
             {
                 if(playerHuman.GetComponent<MainPlayerController>().GetMode())
                 {
+                    player.transform.SetParent(null);
                     player.SetActive(false);
                     playerHuman.GetComponent<CharacterController>().enabled = false;
                     playerHuman.transform.localScale = new Vector3(1,1,1);
@@ -38,6 +39,7 @@ public class SceneChanger : MonoBehaviour
                     if(!playerHuman.GetComponent<MainPlayerController>().GetMode() && playerHuman.GetComponent<MainPlayerController>().IsNearAutel())
                     {
                         player.transform.position = playerHuman.transform.position;
+                        player.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
                         player.SetActive(true);
                         playerHuman.GetComponent<CharacterController>().enabled = false;
                         playerHuman.transform.localScale = new Vector3(15,15,15);

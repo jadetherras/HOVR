@@ -1042,6 +1042,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graspingRadius: 2
   paddingRot: {x: 0, y: 0, z: 0}
+  towerManag: {fileID: 0}
 --- !u!54 &215734346
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1496,8 +1497,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87a4b6dcb12988747b3e2d448a5d6c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  graspingRadius: 1
+  graspingRadius: 0.4
   paddingRot: {x: 0, y: 0, z: 0}
+  towerManag: {fileID: 0}
 --- !u!65 &365138903
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2043,6 +2045,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graspingRadius: 2
   paddingRot: {x: 0, y: 0, z: 0}
+  towerManag: {fileID: 0}
 --- !u!1 &505586479
 GameObject:
   m_ObjectHideFlags: 0
@@ -2368,8 +2371,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87a4b6dcb12988747b3e2d448a5d6c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  graspingRadius: 1
+  graspingRadius: 0.4
   paddingRot: {x: 0, y: 0, z: 0}
+  towerManag: {fileID: 0}
 --- !u!135 &575328713
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -2467,6 +2471,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graspingRadius: 1
   paddingRot: {x: 0, y: 0, z: 0}
+  towerManag: {fileID: 0}
 --- !u!65 &579854469
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3243,6 +3248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graspingRadius: 6
   paddingRot: {x: 0, y: 0, z: 0}
+  towerManag: {fileID: 0}
 --- !u!65 &708856950
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4215,6 +4221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graspingRadius: 1
   paddingRot: {x: 0, y: 0, z: 0}
+  towerManag: {fileID: 0}
 --- !u!65 &1252210275
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4479,6 +4486,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graspingRadius: 1
   paddingRot: {x: 0, y: 0, z: 0}
+  towerManag: {fileID: 0}
 --- !u!65 &1261883386
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4684,39 +4692,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graspingRadius: 2
   paddingRot: {x: 0, y: 0, z: 0}
---- !u!1 &1364676980 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0361adb5c4f236344bb5607ec73e338a, type: 3}
-  m_PrefabInstance: {fileID: 1593342045}
-  m_PrefabAsset: {fileID: 0}
---- !u!64 &1364676981
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1364676980}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
---- !u!114 &1364676982
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1364676980}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fb8c751fec84a0b499b70c1c0bcd3456, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  scenepass: 0
-  scenenb: 0
+  towerManag: {fileID: 0}
 --- !u!1 &1401621651
 GameObject:
   m_ObjectHideFlags: 0
@@ -5192,6 +5168,20 @@ MonoBehaviour:
   shape2: {fileID: 1593342047}
   which: 0
   interactive_radius: 6
+--- !u!114 &1593342050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593342048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb8c751fec84a0b499b70c1c0bcd3456, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scenepass: 0
+  scenenb: 0
 --- !u!54 &1593342051
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5230,7 +5220,7 @@ MeshCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1593342048}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 4
   m_Convex: 1
@@ -6364,6 +6354,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   graspingRadius: 1
   paddingRot: {x: 0, y: 0, z: 0}
+  towerManag: {fileID: 0}
 --- !u!65 &1827666549
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7451,8 +7442,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132148353910171}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 15.08, y: 2.56, z: 0.5}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalPosition: {x: 15.08, y: 1.56, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3316992659670413158}
   - {fileID: 3371938057892783694}
@@ -7721,8 +7712,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87a4b6dcb12988747b3e2d448a5d6c76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  graspingRadius: 2
+  graspingRadius: 4
   paddingRot: {x: 0, y: 0, z: 0}
+  towerManag: {fileID: 0}
 --- !u!54 &919132148961790127
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -9181,7 +9173,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6455969291492985004}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.2, y: 101.2, z: 2.1}
+  m_LocalPosition: {x: 4.2, y: 95.41, z: 2.1}
   m_LocalScale: {x: 1, y: 0.2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -10704,11 +10696,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8233043909263386624, guid: 2bdb117ac02ae634b950bb7343a9ff42, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 56.71
+      value: 57.92
       objectReference: {fileID: 0}
     - target: {fileID: 8233043909263386624, guid: 2bdb117ac02ae634b950bb7343a9ff42, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -8.6
+      value: -4.69
       objectReference: {fileID: 0}
     - target: {fileID: 8233043909263386624, guid: 2bdb117ac02ae634b950bb7343a9ff42, type: 3}
       propertyPath: m_LocalPosition.z

@@ -39,13 +39,19 @@ public class Tower : MonoBehaviour
     {
         if(lanterns[0].IsActive){
             DeactivateOnLant1.SetActiveRecursively(false);
-            tower[0].GetComponent<Renderer>().material.color = new Color(1,0,0);
+            foreach( GameObject child in tower[0].transform.Find("FloorColor")){
+                child.GetComponent<Renderer>().material.color = new Color(1,0,0);
+            }
         }
         if(lanterns[1].IsActive){
-            tower[1].GetComponent<Renderer>().material.color = new Color(0,1,0);
+            foreach( GameObject child in tower[1].transform.Find("FloorColor")){
+                child.GetComponent<Renderer>().material.color = new Color(0,1,0);
+            }
         }
         if(lanterns[2].IsActive){
-            tower[2].GetComponent<Renderer>().material.color = new Color(0,0,1);
+            foreach( GameObject child in tower[2].transform.Find("FloorColor")){
+                child.GetComponent<Renderer>().material.color = new Color(0,0,1);
+            }
         }
 
         for (int i = 0; i < tower.Count; i++){ 
@@ -128,13 +134,8 @@ public class Tower : MonoBehaviour
 
             allColor = allColor && lanterns[i].IsActive;
             rightOrder = rightOrder && (order == towerOrder[i]);
-        }
-
-        if(allColor && rightOrder && fromDetach){
-            tower[0].GetComponent<Renderer>().material.color = new Color(0,1,0);
-            tower[1].GetComponent<Renderer>().material.color = new Color(0,1,0);
-            tower[2].GetComponent<Renderer>().material.color = new Color(0,1,0);
             rightAngle = rightAngle && (tower[i].transform.rotation.eulerAngles.y == towerAngle[i]);
+
         }
 
         if(fromDetach){
@@ -152,6 +153,15 @@ public class Tower : MonoBehaviour
 
             if(allColor && rightOrder){
                 DeactivateOnAllLants.SetActiveRecursively(false);
+                foreach( GameObject child in tower[0].transform.Find("FloorColor")){
+                    child.GetComponent<Renderer>().material.color = new Color(0,1,0);
+                }
+                foreach( GameObject child in tower[1].transform.Find("FloorColor")){
+                    child.GetComponent<Renderer>().material.color = new Color(0,1,0);
+                }
+                foreach( GameObject child in tower[2].transform.Find("FloorColor")){
+                    child.GetComponent<Renderer>().material.color = new Color(0,1,0);
+                }
             }
         }
     }

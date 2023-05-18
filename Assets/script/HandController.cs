@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 public class HandController : MonoBehaviour {
 
@@ -22,7 +24,7 @@ public class HandController : MonoBehaviour {
 	// N.B. This list is static as it is the same list for all hands controller
 	// thus there is no need to duplicate it for each instance
 	static protected ObjectAnchor[] anchors_in_the_scene;
-	static protected Transformable[] transformable_in_the_scene;
+	static protected List<Transformable> transformable_in_the_scene;
 	//LENA
 	static protected Interactable[] interactables_in_the_scene;
 
@@ -34,7 +36,7 @@ public class HandController : MonoBehaviour {
 		perso.SetActive(true);
 		if ( anchors_in_the_scene == null ) anchors_in_the_scene = GameObject.FindObjectsOfType<ObjectAnchor>();
 		perso.SetActive(false);
-		if ( transformable_in_the_scene == null ) transformable_in_the_scene = GameObject.FindObjectsOfType<Transformable>();
+		if ( transformable_in_the_scene == null ) transformable_in_the_scene = GameObject.FindObjectsOfType<Transformable>().ToList();
 		//LENA
 		if ( interactables_in_the_scene == null ) interactables_in_the_scene = GameObject.FindObjectsOfType<Interactable>();
 		lastPosition = this.transform.position;
@@ -163,7 +165,7 @@ public class HandController : MonoBehaviour {
 				float oject_distance;
 
 				// Iterate over objects to determine if we can interact with it
-				for ( int i = 0; i < transformable_in_the_scene.Length; i++ ) {
+				for ( int i = 0; i < transformable_in_the_scene.Count; i++ ) {
 
 					// Compute the distance to the object
 					oject_distance = Vector3.Distance( this.transform.position, transformable_in_the_scene[i].transform.position );
@@ -179,6 +181,7 @@ public class HandController : MonoBehaviour {
 				// If the best object is in range grab it
 				if ( best_object_id != -1 ) {
 					transformable_in_the_scene[best_object_id].Change(0);
+					transformable_in_the_scene.RemoveAt(best_object_id);
 				}
 			//}
 		}
