@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class MainPlayerController : MonoBehaviour {
 
-	protected List<Type> list_of_player_upgrades = new List<Type>();
+	[SerializeField]
 	protected bool godMode = false;
+
+	protected List<Type> list_of_player_upgrades = new List<Type>();
+	
 	protected bool nearAutel = false;
 	protected bool b_4_released = false;
 
