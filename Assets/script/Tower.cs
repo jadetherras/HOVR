@@ -15,9 +15,6 @@ public class Tower : MonoBehaviour
     public List<float> floor2Angle;
     public GameObject DeactivateOnLant1;
     public GameObject DeactivateOnAllLants;
-    public TextMeshPro debug0;
-    public TextMeshPro debug1;
-    public TextMeshPro debug2;
           
     private List<Vector3> posFloor = new List<Vector3>();
     private List<Vector3> rotFloor = new List<Vector3>();
@@ -48,6 +45,7 @@ public class Tower : MonoBehaviour
                 child.gameObject.GetComponent<Renderer>().material.color = new Color(1,0,0);
             }
         }
+        
         if(lanterns[1].IsActive){
             foreach( Transform child in tower[1].transform.Find("FloorColor").transform){
                 child.gameObject.GetComponent<Renderer>().material.color = new Color(0,1,0);
@@ -147,9 +145,6 @@ public class Tower : MonoBehaviour
         }
 
         if(fromDetach){
-            debug0.text = rightAngle.ToString();
-            debug1.text = (Math.Abs(tower[1].transform.rotation.eulerAngles.y - towerAngle[1]) < 0.1f).ToString();
-            debug2.text = (Math.Abs(tower[2].transform.rotation.eulerAngles.y - towerAngle[2]) < 0.1f).ToString();
 
             rightSecondFloor1 = (floorOrder[2] == 0 && Math.Abs(tower[2].transform.rotation.eulerAngles.y - floor2Angle[0]) < 0.1f) || rightSecondFloor1;
             rightSecondFloor2 = (floorOrder[2] == 1 && Math.Abs(tower[2].transform.rotation.eulerAngles.y - floor2Angle[1]) < 0.1f) || rightSecondFloor2;
@@ -159,7 +154,6 @@ public class Tower : MonoBehaviour
                 lanterns[1].transform.position = PosLantern[1];
                 foreach( Transform child in tower[1].transform.Find("FloorColor").transform){
                     child.gameObject.GetComponent<Renderer>().material.color = new Color(1,0,0);
-                    debug1.text = "at least 1";
                 }
             }
 

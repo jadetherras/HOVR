@@ -6,12 +6,18 @@ public class tutorial : MonoBehaviour {
 
     public List<GameObject> StepsList;
     public List<Lantern_switch> Pass;
+    //public GameObject wall;
+    //private AudioSource Success;
+    //public GameObject light;
     //protected int i = 0;
 
     void Start () {
-        Debug.LogWarning("here the count");
-        Debug.LogWarning(StepsList.Count);
-        //pass step 0
+
+        //if ( GetComponent<AudioSource>() != null){
+        //    Success = GetComponent<AudioSource>();
+        //} else {
+        //    Success = null;
+        //}
 
         foreach (var step in StepsList)  {
             step.SetActive(false);
@@ -23,19 +29,29 @@ public class tutorial : MonoBehaviour {
             Debug.LogWarning("goo");
             passStep();
         }
-        //if(StepsList.Count > 0 && i == 300) {
-        //    Debug.LogWarning("pass activate");
-        //    passStep();
-        //}
-        //i = i+1;
 
-    }
+        //if (Pass.Count == 0) {
+
+          //  if (wall != null){
+          //      wall.SetActive(false);
+          //  }
+
+          //  if (light != null){
+          //      light.SetActive(true);
+          //  }
+
+           // if (Success != null){
+           //     Success.Play();
+           // }
+        }
+
+    
 
     void passStep() {
-        Debug.LogWarning("pass the step");
         Pass.RemoveAt(0);
         StepsList[0].SetActive(true);
         StepsList.RemoveAt(0);
     }
 
 }
+

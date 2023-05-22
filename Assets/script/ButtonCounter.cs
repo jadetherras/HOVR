@@ -9,7 +9,8 @@ public class ButtonCounter : MonoBehaviour
     protected int count = 0;
     protected int maxcount = 10;
 
-    public GameObject lantern;
+    public Lantern_switch lantern;
+    //public levelManager manager;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +19,7 @@ public class ButtonCounter : MonoBehaviour
         mtext= GetComponent<TextMeshPro>();
         mtext.text="Score:" + "\n" +count.ToString() + "/" +maxcount.ToString();
         count = lantern.GetComponent<Lantern_switch>().givecount();
-        maxcount = lantern.GetComponent<Lantern_switch>().givemaxcount();
+        //maxcount = lantern.GetComponent<Lantern_switch>().givemaxcount();
     }
 
     // Update is called once per frame
