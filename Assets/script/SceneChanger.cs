@@ -12,6 +12,10 @@ public class SceneChanger : MonoBehaviour
     [Header("Player cameras")]
     public GameObject playerHuman;
 
+    [Header("Player Hands")]
+    public HandController leftHand;
+    public HandController rightHand;
+
     protected bool test = false;
 
     // Update is called once per frame
@@ -25,6 +29,15 @@ public class SceneChanger : MonoBehaviour
             {
                 if(playerHuman.GetComponent<MainPlayerController>().GetMode())
                 {
+                    foreach(Transform child in leftHand.transform)
+                    {
+                        child.SetParent(null);
+                    }
+                    foreach(Transform child in rightHand.transform)
+                    {
+                        child.SetParent(null);
+                    }
+
                     player.transform.SetParent(null);
                     player.SetActive(false);
                     playerHuman.GetComponent<CharacterController>().enabled = false;
@@ -38,6 +51,15 @@ public class SceneChanger : MonoBehaviour
                 {
                     if(!playerHuman.GetComponent<MainPlayerController>().GetMode() && playerHuman.GetComponent<MainPlayerController>().IsNearAutel())
                     {
+                         foreach(Transform child in leftHand.transform)
+                         {
+                             child.GetComponent<ObjectAnchor>().detach_from(leftHand);
+                         }
+                         foreach(Transform child in rightHand.transform)
+                         {
+                             child.GetComponent<ObjectAnchor>().detach_from(rightHand);
+                         }
+
                         player.transform.position = playerHuman.transform.position;
                         player.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
                         player.SetActive(true);

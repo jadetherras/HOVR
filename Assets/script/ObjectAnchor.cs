@@ -23,6 +23,7 @@ public class ObjectAnchor : MonoBehaviour {
 	protected Vector3 current_position;
 	protected Vector3 lastPosition;
 	protected Vector3 Velocity;
+	protected MainPlayerController mainPlayer;
   
 	void Start () {
 		/*
@@ -31,6 +32,7 @@ public class ObjectAnchor : MonoBehaviour {
 		}
 		*/
 
+		mainPlayer = GameObject.FindObjectsOfType<MainPlayerController>()[0];
 		initial_transform_parent = transform.parent; 
 		rb = GetComponent<Rigidbody>();
 		//joint = GetComponent<FixedJoint>();
@@ -58,8 +60,9 @@ public class ObjectAnchor : MonoBehaviour {
 			this.transform.position = hand_controller.transform.position;
 		}else{
 			if(this.gameObject.tag == "TowerFloor"){
-				this.gameObject.SetActiveRecursively(false);
-				this.gameObject.SetActive(true);
+				foreach(Transform child in this.transform){
+					child.gameObject.SetActive(child.gameObject.tag == "Wall");
+				}
 				this.gameObject.GetComponent<Collider>().enabled = false;
 			}
 		}
@@ -171,9 +174,11 @@ public class ObjectAnchor : MonoBehaviour {
 				float rz = Mathf.Round(this.transform.eulerAngles.z/45f);
 
 				this.transform.eulerAngles = new Vector3(45 * rx, 45 * ry, 45 * rz);
-				towerManag.GetComponent<Tower>().SetNearest(true);
 				this.gameObject.GetComponent<Collider>().enabled = true;
-				this.gameObject.SetActiveRecursively(true);
+				foreach(Transform child in this.transform){
+					child.gameObject.SetActive(true);
+				}
+				towerManag.GetComponent<Tower>().SetNearest(true);
 			}else{
 				rb.useGravity = true;
 				rb.velocity = hand_controller.velocity();
@@ -189,7 +194,7 @@ public class ObjectAnchor : MonoBehaviour {
 
 	public Vector3 velocity () {return Velocity;}
 
-	public virtual bool can_be_grasped_by ( MainPlayerController player ) { return true; } //player.is_equiped_with( typeof( BasicGraspUpgrade ) );
+	public virtual bool can_be_grasped_by ( MainPlayerController player ) { return true; }
 
 	//LENA MODIF
 
@@ -217,9 +222,9 @@ public class ObjectAnchor : MonoBehaviour {
 	protected GameObject glue; // = GameObject("Glue")	
 	protected bool is_glued = false;
 	void OnTriggerStay ( Collider other ) {
-		if (other.gameObject.tag == "Container" && !(this.gameObject.tag == "MoveItem" || this.gameObject.tag == "TowerFloor")){
+		if ((other.gameObject.tag == "Container" || other.gameObject.tag == "MoveItem" || other.gameObject.tag == "TowerFloor") && !(this.gameObject.tag == "MoveItem" || this.gameObject.tag == "TowerFloor")){
 			//Debug.Log(glued);
-			if (this.is_available() && !is_glued){
+			if (this.is_available() && !is_glued && (!(other.gameObject.tag == "MoveItem" || other.gameObject.tag == "TowerFloor") || mainPlayer.GetMode())){
 				is_contained = true;
 				is_glued = true;
 				
@@ -232,7 +237,7 @@ public class ObjectAnchor : MonoBehaviour {
 				this.transform.SetParent(glue.gameObject.transform);
 				//test
 
-
+				
 				rb.useGravity = false;
 				rb.isKinematic = true;
 				//transform.localScale = originalScale;
@@ -247,5 +252,5 @@ public class ObjectAnchor : MonoBehaviour {
 
 			//ATTENTION Ã  bien s'occuper des nulls dans le exit, et remarquer qu'il est constamment en exit aussi ! 
 		}
-	}	
+	}
 }

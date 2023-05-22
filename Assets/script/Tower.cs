@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using System;
 
 public class Tower : MonoBehaviour
 {
@@ -9,26 +11,29 @@ public class Tower : MonoBehaviour
     public List<Lantern_switch> lanterns;
     public int size;
     public List<int> towerOrder;
-    public List<int> towerAngle;
-    public List<int> floor2Angle;
+    public List<float> towerAngle;
+    public List<float> floor2Angle;
     public GameObject DeactivateOnLant1;
     public GameObject DeactivateOnAllLants;
-
+    public TextMeshPro debug0;
+    public TextMeshPro debug1;
+    public TextMeshPro debug2;
+          
     private List<Vector3> posFloor = new List<Vector3>();
     private List<Vector3> rotFloor = new List<Vector3>();
     private List<int> floorOrder = new List<int>(); //give a floor and get it's order
     private List<int> orderFloor = new List<int>(); //give an order and get it's floor
     private List<Vector3> PosLantern = new List<Vector3>();
-    private bool rightSecondFloor1 = false;
-    private bool rightSecondFloor2 = false;
-    private bool rightSecondFloor3 = false;
+    private bool rightSecondFloor1 = true;
+    private bool rightSecondFloor2 = true;
+    private bool rightSecondFloor3 = true;
     // Start is called before the first frame update
     void Start()
     {
         for (int i = 0; i < tower.Count; i++){
             floorOrder.Add(i);
             orderFloor.Add(i);
-            PosLantern.Add(new Vector3(lanterns[i].transform.position.x, lanterns[i].transform.position.y - 1, lanterns[i].transform.position.z));
+            PosLantern.Add(new Vector3(lanterns[i].transform.position.x, lanterns[i].transform.position.y - 1.6f, lanterns[i].transform.position.z));
             posFloor.Add(tower[i].transform.position);
             rotFloor.Add(tower[i].transform.rotation.eulerAngles);
         }
@@ -39,18 +44,18 @@ public class Tower : MonoBehaviour
     {
         if(lanterns[0].IsActive){
             DeactivateOnLant1.SetActiveRecursively(false);
-            foreach( GameObject child in tower[0].transform.Find("FloorColor")){
-                child.GetComponent<Renderer>().material.color = new Color(1,0,0);
+            foreach( Transform child in tower[0].transform.Find("FloorColor").transform){
+                child.gameObject.GetComponent<Renderer>().material.color = new Color(1,0,0);
             }
         }
         if(lanterns[1].IsActive){
-            foreach( GameObject child in tower[1].transform.Find("FloorColor")){
-                child.GetComponent<Renderer>().material.color = new Color(0,1,0);
+            foreach( Transform child in tower[1].transform.Find("FloorColor").transform){
+                child.gameObject.GetComponent<Renderer>().material.color = new Color(0,1,0);
             }
         }
         if(lanterns[2].IsActive){
-            foreach( GameObject child in tower[2].transform.Find("FloorColor")){
-                child.GetComponent<Renderer>().material.color = new Color(0,0,1);
+            foreach( Transform child in tower[2].transform.Find("FloorColor").transform){
+                child.gameObject.GetComponent<Renderer>().material.color = new Color(0,0,1);
             }
         }
 
@@ -131,36 +136,50 @@ public class Tower : MonoBehaviour
         for (int i = 0; i < tower.Count; i++){
             int order = floorOrder[i];
             tower[i].transform.position = posFloor[order];
+            Quaternion currentRotation = Quaternion.identity;
+            currentRotation.eulerAngles = new Vector3(0,tower[i].transform.rotation.eulerAngles.y,0);
+            tower[i].transform.rotation = currentRotation;
 
             allColor = allColor && lanterns[i].IsActive;
             rightOrder = rightOrder && (order == towerOrder[i]);
-            rightAngle = rightAngle && (tower[i].transform.rotation.eulerAngles.y == towerAngle[i]);
+            rightAngle = rightAngle && (Math.Abs(tower[i].transform.rotation.eulerAngles.y - towerAngle[i]) < 0.1f);
 
         }
 
         if(fromDetach){
-            rightSecondFloor1 = (floorOrder[2] == 0 && tower[2].transform.rotation.eulerAngles.y == floor2Angle[0]) || rightSecondFloor1;
-            rightSecondFloor2 = (floorOrder[2] == 1 && tower[2].transform.rotation.eulerAngles.y == floor2Angle[1]) || rightSecondFloor2;
-            rightSecondFloor3 = (floorOrder[2] == 2 && tower[2].transform.rotation.eulerAngles.y == floor2Angle[2]) || rightSecondFloor3;
+            debug0.text = rightAngle.ToString();
+            debug1.text = (Math.Abs(tower[1].transform.rotation.eulerAngles.y - towerAngle[1]) < 0.1f).ToString();
+            debug2.text = (Math.Abs(tower[2].transform.rotation.eulerAngles.y - towerAngle[2]) < 0.1f).ToString();
+
+            rightSecondFloor1 = (floorOrder[2] == 0 && Math.Abs(tower[2].transform.rotation.eulerAngles.y - floor2Angle[0]) < 0.1f) || rightSecondFloor1;
+            rightSecondFloor2 = (floorOrder[2] == 1 && Math.Abs(tower[2].transform.rotation.eulerAngles.y - floor2Angle[1]) < 0.1f) || rightSecondFloor2;
+            rightSecondFloor3 = (floorOrder[2] == 2 && Math.Abs(tower[2].transform.rotation.eulerAngles.y - floor2Angle[2]) < 0.1f) || rightSecondFloor3;
 
             if(rightAngle){
                 lanterns[1].transform.position = PosLantern[1];
+                foreach( Transform child in tower[1].transform.Find("FloorColor").transform){
+                    child.gameObject.GetComponent<Renderer>().material.color = new Color(1,0,0);
+                    debug1.text = "at least 1";
+                }
             }
 
             if(rightSecondFloor3 && rightSecondFloor2 && rightSecondFloor1){
                 lanterns[2].transform.position = PosLantern[2];
+                foreach( Transform child in tower[2].transform.Find("FloorColor").transform){
+                    child.gameObject.GetComponent<Renderer>().material.color = new Color(1,0,0);
+                }
             }
 
             if(allColor && rightOrder){
                 DeactivateOnAllLants.SetActiveRecursively(false);
-                foreach( GameObject child in tower[0].transform.Find("FloorColor")){
-                    child.GetComponent<Renderer>().material.color = new Color(0,1,0);
+                foreach( Transform child in tower[0].transform.Find("FloorColor").transform){
+                    child.gameObject.GetComponent<Renderer>().material.color = new Color(0,1,0);
                 }
-                foreach( GameObject child in tower[1].transform.Find("FloorColor")){
-                    child.GetComponent<Renderer>().material.color = new Color(0,1,0);
+                foreach( Transform child in tower[1].transform.Find("FloorColor").transform){
+                    child.gameObject.GetComponent<Renderer>().material.color = new Color(0,1,0);
                 }
-                foreach( GameObject child in tower[2].transform.Find("FloorColor")){
-                    child.GetComponent<Renderer>().material.color = new Color(0,1,0);
+                foreach( Transform child in tower[2].transform.Find("FloorColor").transform){
+                    child.gameObject.GetComponent<Renderer>().material.color = new Color(0,1,0);
                 }
             }
         }

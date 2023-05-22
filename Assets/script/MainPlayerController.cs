@@ -5,6 +5,9 @@ using UnityEngine;
 public class MainPlayerController : MonoBehaviour {
 
 	[SerializeField]
+	protected bool MenuMode = false;
+
+
 	protected bool godMode = false;
 
 	protected List<Type> list_of_player_upgrades = new List<Type>();
@@ -36,6 +39,10 @@ public class MainPlayerController : MonoBehaviour {
 
 	public bool GetMode(){
 		return godMode;
+	}
+
+	public bool GetMenuMode(){
+		return MenuMode;
 	}
 
 	public void SetMode(bool mode){
