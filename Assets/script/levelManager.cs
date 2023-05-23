@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 
 public class levelManager : MonoBehaviour {
@@ -8,8 +9,9 @@ public class levelManager : MonoBehaviour {
     public GameObject wall;
     private AudioSource Success;
     public GameObject light;
-    public int maxSwitchCount = 5;
+    public int maxSwitchCount;
     public Lantern_switch lantern;
+    public TextMeshPro WristBand;
 
     void Start () {
         
@@ -45,6 +47,9 @@ public class levelManager : MonoBehaviour {
                 Success.Play();
             }
         }
+
+        int count = lantern.GetComponent<Lantern_switch>().givecount();
+        WristBand.text="Score:" + "\n" +count.ToString() + "/" +maxSwitchCount.ToString();
 
     }
 

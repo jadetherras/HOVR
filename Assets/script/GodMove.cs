@@ -236,7 +236,7 @@ public class GodMove : MonoBehaviour {
 			}else{
 			*/
 
-			if (!player.GetComponent<MainPlayerController>().GetMode()) {
+			if (!player.GetComponent<MainPlayerController>().GetMode() && !player.GetComponent<MainPlayerController>().GetMenuMode()) {
 				if(b_up.y >= 0.85){
 					if ( marker_prefab_instanciated == null ) marker_prefab_instanciated = GameObject.Instantiate( marker, this.transform );
 					// Place the marker to the targeted position
