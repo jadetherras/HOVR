@@ -8,6 +8,7 @@ public class Tower : MonoBehaviour
 {
     public MainPlayerController player;
     public List<GameObject> tower;
+    public List<GameObject> cristals;
     public List<Lantern_switch> lanterns;
     public int size;
     public List<int> towerOrder;
@@ -15,15 +16,12 @@ public class Tower : MonoBehaviour
     public List<float> floor2Angle;
     public GameObject DeactivateOnLant1;
     public GameObject DeactivateOnAllLants;
-          
+
     private List<Vector3> posFloor = new List<Vector3>();
     private List<Vector3> rotFloor = new List<Vector3>();
     private List<int> floorOrder = new List<int>(); //give a floor and get it's order
     private List<int> orderFloor = new List<int>(); //give an order and get it's floor
     private List<Vector3> PosLantern = new List<Vector3>();
-    private bool rightSecondFloor1 = true;
-    private bool rightSecondFloor2 = true;
-    private bool rightSecondFloor3 = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -140,16 +138,20 @@ public class Tower : MonoBehaviour
 
             allColor = allColor && lanterns[i].IsActive;
             rightOrder = rightOrder && (order == towerOrder[i]);
-            rightAngle = rightAngle && (Math.Abs(tower[i].transform.rotation.eulerAngles.y - towerAngle[i]) < 0.1f);
+            rightAngle = rightAngle && (Math.Abs((tower[i].transform.rotation.eulerAngles.y % 360) - towerAngle[i]) < 0.1f) && floorOrder[i] == i;
 
         }
 
         if(fromDetach){
-
-            rightSecondFloor1 = (floorOrder[2] == 0 && Math.Abs(tower[2].transform.rotation.eulerAngles.y - floor2Angle[0]) < 0.1f) || rightSecondFloor1;
-            rightSecondFloor2 = (floorOrder[2] == 1 && Math.Abs(tower[2].transform.rotation.eulerAngles.y - floor2Angle[1]) < 0.1f) || rightSecondFloor2;
-            rightSecondFloor3 = (floorOrder[2] == 2 && Math.Abs(tower[2].transform.rotation.eulerAngles.y - floor2Angle[2]) < 0.1f) || rightSecondFloor3;
-
+            bool rightFloor2Angle = true;
+            for(int i = 0; i < floor2Angle.Count; i++){
+                bool correct = (floorOrder[2] == i && Math.Abs((tower[2].transform.rotation.eulerAngles.y % 360) - floor2Angle[i]) < 0.1f) || (cristals[i].GetComponent<Renderer>().material.color == new Color(0,1,0));
+                rightFloor2Angle = rightFloor2Angle && correct;
+                if(correct){
+                    cristals[i].GetComponent<Renderer>().material.color = new Color(0,1,0);
+                }
+            }
+            
             if(rightAngle){
                 lanterns[1].transform.position = PosLantern[1];
                 foreach( Transform child in tower[1].transform.Find("FloorColor").transform){
@@ -157,7 +159,7 @@ public class Tower : MonoBehaviour
                 }
             }
 
-            if(rightSecondFloor3 && rightSecondFloor2 && rightSecondFloor1){
+            if(rightFloor2Angle){
                 lanterns[2].transform.position = PosLantern[2];
                 foreach( Transform child in tower[2].transform.Find("FloorColor").transform){
                     child.gameObject.GetComponent<Renderer>().material.color = new Color(1,0,0);

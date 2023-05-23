@@ -24,6 +24,11 @@ public class ObjectAnchor : MonoBehaviour {
 	protected Vector3 lastPosition;
 	protected Vector3 Velocity;
 	protected MainPlayerController mainPlayer;
+
+	// Store the hand controller this object will be attached to
+	protected HandController hand_controller = null;
+
+
   
 	void Start () {
 		/*
@@ -42,10 +47,6 @@ public class ObjectAnchor : MonoBehaviour {
 		lastPosition = rb.transform.position;
 		Velocity = Vector3.zero;
 	}
-	
-	// Store the hand controller this object will be attached to
-	protected HandController hand_controller = null;
-
 	
 	public virtual void attach_to ( HandController hand_controller , bool god) {
 		if((this.gameObject.tag == "MoveItem" || this.gameObject.tag == "TowerFloor") && !god){
@@ -85,8 +86,14 @@ public class ObjectAnchor : MonoBehaviour {
 	}
 
 	public void Update () {
-		Velocity = (rb.transform.position - lastPosition)/Time.deltaTime;
-		lastPosition = rb.transform.position;
+
+		if (this.is_available()) {
+			Velocity = (rb.transform.position - lastPosition)/Time.deltaTime;
+			lastPosition = rb.transform.position;
+		} else {
+			Velocity = hand_controller.velocity();
+			lastPosition = hand_controller.position();
+		}
 
 		if(moving){
 			i += 0.05f;
@@ -114,13 +121,16 @@ public class ObjectAnchor : MonoBehaviour {
 			return;
 		}
 
-		if (this.hand_controller == null && collision.gameObject.GetComponent<ObjectAnchor>().is_available()) {
-			Debug.LogWarning( "go 2");
-			rb.velocity = Velocity/2 + collision.gameObject.GetComponent<ObjectAnchor>().velocity()/2;
-		} else if (this.hand_controller == null && !collision.gameObject.GetComponent<ObjectAnchor>().is_available()) {
-			Debug.LogWarning( "go 1");
-			rb.velocity = Velocity + collision.gameObject.GetComponent<ObjectAnchor>().velocity();
+		if(this.hand_controller == null && (this.gameObject.tag != "MoveItem" && this.gameObject.tag != "TowerFloor") && (collision.gameObject.tag != "MoveItem" && collision.gameObject.tag != "TowerFloor") ) {
+			if (collision.gameObject.GetComponent<ObjectAnchor>().is_available()) {
+				rb.velocity = Velocity/2 + collision.gameObject.GetComponent<ObjectAnchor>().velocity()/2;
+			} else {
+				rb.velocity = Velocity + collision.gameObject.GetComponent<ObjectAnchor>().velocity();
+			}
+
 		}
+	
+		
 	}
 
 	public virtual void long_attach_to ( HandController hand_controller , bool god) {
@@ -188,7 +198,7 @@ public class ObjectAnchor : MonoBehaviour {
 		moving = false;
 	}
 
-	public virtual bool is_available () { return hand_controller == null; }
+	public virtual bool is_available () { return hand_controller == null;}
 
 	public virtual double get_grasping_radius () { return graspingRadius; }
 

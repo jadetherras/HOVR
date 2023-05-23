@@ -15,6 +15,7 @@ TagManager:
   - TowerFloor
   - movespecial
   - Perso
+  - Wall
   layers:
   - Default
   - TransparentFX

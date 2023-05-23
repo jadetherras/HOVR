@@ -72,6 +72,7 @@ public class HandController : MonoBehaviour {
 	}
 
 	public Vector3 velocity () {return Velocity;}
+	public Vector3 position () {return lastPosition;}
 
 	// Automatically called at each frame
 	void Update () { 
